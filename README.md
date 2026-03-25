@@ -29,3 +29,4 @@ The purpose of this project is to demonstrate:
 
 Initial working app completed.
 Documentation setup in progress.
+UI improved with responsive design and enhanced styling.
