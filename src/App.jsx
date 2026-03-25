@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react';
 import './App.css';
+import TaskInput from './components/TaskInput';
+import FilterBar from './components/FilterBar';
+import TaskList from './components/TaskList';
 
 function App() {
   const [taskText, setTaskText] = useState('');
@@ -51,12 +54,6 @@ function App() {
     return tasks;
   }, [tasks, filter]);
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      addTask();
-    }
-  };
-
   return (
     <div className="app">
       <div className="todo-card">
@@ -65,64 +62,19 @@ function App() {
           A small React to-do app for the assignment workflow.
         </p>
 
-        <div className="task-input-row">
-          <input
-            type="text"
-            placeholder="Enter a task"
-            value={taskText}
-            onChange={(event) => setTaskText(event.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <button onClick={addTask}>Add Task</button>
-        </div>
+        <TaskInput
+          taskText={taskText}
+          setTaskText={setTaskText}
+          addTask={addTask}
+        />
 
-        <div className="filter-row">
-          <button
-            className={filter === 'all' ? 'active-filter' : ''}
-            onClick={() => setFilter('all')}
-          >
-            All
-          </button>
-          <button
-            className={filter === 'active' ? 'active-filter' : ''}
-            onClick={() => setFilter('active')}
-          >
-            Active
-          </button>
-          <button
-            className={filter === 'completed' ? 'active-filter' : ''}
-            onClick={() => setFilter('completed')}
-          >
-            Completed
-          </button>
-        </div>
+        <FilterBar filter={filter} setFilter={setFilter} />
 
-        <ul className="task-list">
-          {filteredTasks.length === 0 ? (
-            <li className="empty-state">No tasks to display.</li>
-          ) : (
-            filteredTasks.map((task) => (
-              <li key={task.id} className="task-item">
-                <label className="task-label">
-                  <input
-                    type="checkbox"
-                    checked={task.completed}
-                    onChange={() => toggleTaskCompletion(task.id)}
-                  />
-                  <span className={task.completed ? 'completed-task' : ''}>
-                    {task.text}
-                  </span>
-                </label>
-                <button
-                  className="delete-button"
-                  onClick={() => deleteTask(task.id)}
-                >
-                  Delete
-                </button>
-              </li>
-            ))
-          )}
-        </ul>
+        <TaskList
+          tasks={filteredTasks}
+          toggleTaskCompletion={toggleTaskCompletion}
+          deleteTask={deleteTask}
+        />
       </div>
     </div>
   );
